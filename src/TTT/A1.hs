@@ -12,7 +12,8 @@ _DISPLAY_LOGO_ = True
 
 -- Q#03
 convertRowIndex :: Char -> Int
-convertRowIndex a = fromEnum (toUpper a) - 65  
+--convertRowIndex a = fromEnum (toUpper a) - 65  
+convertRowIndex = (-) 65 . fromEnum . toUpper
 
 -- Q#04
 _INVALID_MOVE_ :: (Int,Int)
@@ -24,28 +25,49 @@ _SEP_ = "_|_"
 
 -- Q#06
 
-data Square = X | O | Neither 
+data Square = X | O | Neither deriving (Show, Eq) 
 
 -- Q#07
 
-data GameState
+data GameState = XWon | OWon | Tie | InProgress deriving Show 
 
 -- Q#08
-
+type Player = Square
+type Row = Square
+type Line = Square
+type Board = Row 
+type Move = (Int,Int)
 -- Q#09
 
-getFirstPlayer = undefined
+getFirstPlayer :: Bool -> Player 
+getFirstPlayer a = if a then X else O 
 
-getFirstPlayer_ = undefined
+getFirstPlayer_ a 
+    | a = X
+    | otherwise = O
 
+    
 -- Q#10
+showGameState :: GameState -> String 
+showGameState gs = case gs of 
+    XWon -> "X Won"
+    OWon -> "O Won"
+    Tie -> "It's a tie"
+    InProgress -> "In progress baby!"
 
-showGameState = undefined
 
 -- Q#11
+switchPlayer :: Player -> Player
+switchPlayer X = O
+switchPlayer O = X
+switchPlayer Neither = Neither
 
-switchPlayer = undefined
 
 -- Q#12
+showSquare :: Square -> String 
+showSquare s 
+    | s == X = "X"
+    | s == O = "O"
+    | s == Neither = "_"
+    | otherwise = "nada"
 
-showSquare = undefined
