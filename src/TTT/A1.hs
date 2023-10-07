@@ -4,7 +4,7 @@ import Data.Char (toUpper)
 
 -- Q#01
 _SIZE_ :: Int
-_SIZE_ = 3
+_SIZE_ = 5
 
 -- Q#02
 _DISPLAY_LOGO_ :: Bool
@@ -12,8 +12,8 @@ _DISPLAY_LOGO_ = True
 
 -- Q#03
 convertRowIndex :: Char -> Int
---convertRowIndex a = fromEnum (toUpper a) - 65  
-convertRowIndex = (-) 65 . fromEnum . toUpper
+convertRowIndex a = fromEnum (toUpper a) - 65  
+--convertRowIndex = (-) 65 . fromEnum . toUpper 
 
 -- Q#04
 _INVALID_MOVE_ :: (Int,Int)
