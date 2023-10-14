@@ -4,7 +4,7 @@ import Data.Char (toUpper)
 
 -- Q#01
 _SIZE_ :: Int
-_SIZE_ = 5
+_SIZE_ = 3
 
 -- Q#02
 _DISPLAY_LOGO_ :: Bool
