@@ -37,14 +37,24 @@ _EMPTY_BOARD_ :: [[Square]]
 _EMPTY_BOARD_ = replicate _SIZE_ _EMPTY_ROW_
 
 -- Q#05
+isTied :: Board -> Bool
+isTied b = 
+    let x = concat b         
+    in 
+        if Neither `notElem` x then True
+        else False
 
-isTied = undefined
-
-_TIED_BOARD_ = undefined
+_TIED_BOARD_ :: Board
+_TIED_BOARD_ = [
+     [X,O,X]
+    ,[X,O,O]
+    ,[O,X,O]
+    ]
 
 -- Q#06
+indexRowStrings :: [String] -> [(Char,String)]
+indexRowStrings x = zipWith (\a b -> (a,b)) ['A'..] x    
 
-indexRowStrings = undefined
 
 -- Q#07
 
