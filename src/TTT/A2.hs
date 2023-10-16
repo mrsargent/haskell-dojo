@@ -57,17 +57,27 @@ indexRowStrings x = zipWith (\a b -> (a,b)) ['A'..] x
 
 
 -- Q#07
+formatLine :: [String] -> String
+formatLine xs =  _SEP_ ++ intercalate _SEP_ xs ++ _SEP_       
 
-formatLine = undefined
 
 -- Q#08
-
-isMoveInBounds = undefined
+isMoveInBounds :: Move -> Bool
+isMoveInBounds (x,y) 
+    | x < _SIZE_ && x >= 0 && y < _SIZE_ && y >= 0    = True
+    | otherwise                                         = False
 
 -- Q#09
-
-stringToMove = undefined
+stringToMove :: String -> Move
+stringToMove (x:xs:[]) = 
+    let first = convertRowIndex x 
+        --c = head xs
+        second = readDigit xs
+        validMove = isMoveInBounds (first,second)
+    in  if validMove then (first,second)
+        else _INVALID_MOVE_
+stringToMove (_:_:_) = _INVALID_MOVE_
 
 -- Q#10
-
+replaceSquareInRow :: Player -> Int -> Row -> Row 
 replaceSquareInRow = undefined
