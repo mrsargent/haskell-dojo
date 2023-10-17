@@ -87,7 +87,7 @@ replaceSquareInRow player index row
         in first ++ [player] ++ second 
 
 rsX :: Int -> Row -> Row 
-rsX = replaceSquareInRow X
+rsX index row = replaceSquareInRow X index row
 
 rsO :: Int -> Row -> Row 
-rsO = replaceSquareInRow O
+rsO index row = replaceSquareInRow O index row 
