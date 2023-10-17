@@ -76,8 +76,18 @@ stringToMove (x:xs:[]) =
         validMove = isMoveInBounds (first,second)
     in  if validMove then (first,second)
         else _INVALID_MOVE_
-stringToMove (_:_:_) = _INVALID_MOVE_
+stringToMove _ = _INVALID_MOVE_
 
 -- Q#10
 replaceSquareInRow :: Player -> Int -> Row -> Row 
-replaceSquareInRow = undefined
+replaceSquareInRow player index row
+    | index >= length row || index < 0 = row 
+    | otherwise = 
+        let (first,_:second) = splitAt index row 
+        in first ++ [player] ++ second 
+
+rsX :: Int -> Row -> Row 
+rsX = replaceSquareInRow X
+
+rsO :: Int -> Row -> Row 
+rsO = replaceSquareInRow O
