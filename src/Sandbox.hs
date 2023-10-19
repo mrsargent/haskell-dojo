@@ -31,5 +31,20 @@ sum_iter :: [Int] -> Int
 sum_iter xs = loop 0 xs
     where 
         loop count [] = count
-        loop count (h:t) = loop (count + h) t 
+        loop count (h:t) = loop (count + h) t
+
+reverse'' :: [a] -> [a]
+reverse'' xs = go [] xs 
+    where
+        go :: [a] -> [a] -> [a]
+        go acc (y:ys) = go (y:acc) ys 
+        go acc []     = acc 
+
+--here's the process of how this works
+-- reverse'' "star"
+-- go [] (s:tar) = go (s:[]) tar
+-- go [s] (t:ar) = go (t:[s]) ar
+-- go [ts] (a:r) = go (a:[ts]) r
+-- go [ats] (r:[]) = go (r:[ats]) []
+-- go [rats] []    = rats
 
