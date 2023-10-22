@@ -48,7 +48,7 @@ _TIED_BOARD_ :: Board
 _TIED_BOARD_ = [
      [X,O,X]
     ,[X,O,O]
-    ,[O,X,O]
+    ,[O,X,X]
     ]
 
 _RANDOM_BOARD_ :: Board

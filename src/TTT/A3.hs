@@ -5,6 +5,7 @@ import TTT.A1
 import TTT.A2
 import Text.Read (Lexeme(String))
 import Control.Monad (forM)
+import System.Random.Stateful (globalStdGen)
 
 -- Q#01
 showInts :: [Int] -> [String]
@@ -52,16 +53,42 @@ dropLastCol [] = []
 dropLastCol (x:xs) = init x : dropLastCol xs
 
 -- Q#06
+-- Board = [Row]
+-- Row =  [Square]
+-- Line = [Square]
+-- Move = (Int,Int)
+-- Player = Square
+getDiag1 :: Board -> Line 
+getDiag1 [] = []
+getDiag1 (x:xs) = head x : go 
+    where
+       go = getDiag1 (dropFirstCol xs)
+--getDiag1 xs = go xs 0
+--   where
+--        go :: Board -> Int -> Line 
+--        go [] _ = []
+--        go (y:ys) 0 = head y : go ys 1
+--        go (y:ys) n = y !! n : go ys (n+1)
+       
+getDiag2 :: Board -> Line          
+getDiag2 [] = []
+getDiag2 (x:xs) = last x : go 
+    where 
+        go = getDiag2 (dropLastCol xs)
 
-getDiag1 = undefined
 
-getDiag2 = undefined
-
-getAllLines = undefined
+getAllLines :: Board -> [Line]
+getAllLines b = b ++ transpose b ++ [getDiag1 b] ++ [getDiag2 b]
 
 -- Q#07
-
-putSquare = undefined
+putSquare :: Player -> Board -> Move -> Board 
+putSquare _ [] _ = []
+putSquare player (x:xs) (0,y) = replaceSquareInRow player y x : xs 
+putSquare player (x:xs) (n,y) = x : putSquare player xs (n-1,y) 
+-- putSquare X _EMPTY_BOARD_ (1,1) 
+-- putSquare X ([E,E,E]:[[E,E,E],[E,E,E]]) (1,1) = [E,E,E] : putSquare X [[E,E,E],[E,E,E]] (1-1,1)
+-- putSqaure X ([E,E,E]:[E,E,E]) (0,1) = replaceSquareInRow X 1 [E,E,E] : [E,E,E]
+-- result [[Neither,Neither,Neither],[Neither,X,Neither],[Neither,Neither,Neither]]
 
 -- Q#08
 
