@@ -51,6 +51,13 @@ _TIED_BOARD_ = [
     ,[O,X,O]
     ]
 
+_RANDOM_BOARD_ :: Board
+_RANDOM_BOARD_ = [
+     [X,O,Neither]
+    ,[X,Neither,O]
+    ,[Neither,X,O]
+    ]
+
 -- Q#06
 indexRowStrings :: [String] -> [(Char,String)]
 indexRowStrings x = zipWith (\a b -> (a,b)) ['A'..] x    
