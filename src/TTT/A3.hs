@@ -7,6 +7,7 @@ import Text.Read (Lexeme(String))
 import Control.Monad (forM)
 import System.Random.Stateful (globalStdGen)
 
+
 -- Q#01
 showInts :: [Int] -> [String]
 showInts [] = []
@@ -92,12 +93,32 @@ putSquare player (x:xs) (n,y) = x : putSquare player xs (n-1,y)
 
 -- Q#08
 
-prependRowIndices = undefined
+prependRowIndices :: [String] -> [String]
+prependRowIndices x = map combineTupleToString (indexRowStrings x)
+                        where 
+                            combineTupleToString :: (Char,String) -> String 
+                            combineTupleToString (c,s) = c : s 
 
 -- Q#09
 
-isWinningLine_ = undefined
+isWinningLine :: Player -> Line -> Bool 
+isWinningLine _ [] = False 
+isWinningLine player xs = go False player xs 
+    where
+        go :: Bool -> Player -> Line -> Bool 
+        go True _ [] = True 
+        go _ p (y:ys) = y == p && go True p ys 
+        go bool _ [] = bool 
+
 
 -- Q#10
-
-isValidMove = undefined
+-- Board = [Row]
+-- Row =  [Square]
+-- Line = [Square]
+-- Move = (Int,Int)
+-- Player = Square
+isValidMove :: Board -> Move -> Bool 
+isValidMove board (c,r) 
+    | not (isMoveInBounds (c,r)) = False
+    | otherwise = isColEmpty (board !! c) r 
+     
