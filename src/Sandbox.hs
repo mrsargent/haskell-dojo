@@ -48,3 +48,13 @@ reverse'' xs = go [] xs
 -- go [ats] (r:[]) = go (r:[ats]) []
 -- go [rats] []    = rats
 
+
+-- more iterative recursion with trace
+freq :: Char -> String -> Int 
+freq c xs = loop 0 xs 
+    where
+        loop :: Int -> String -> Int 
+        loop n []       =  trace (show n) n 
+        loop n (y:ys) 
+            | c == y    = trace (show n ++ " |" ++ show y) (loop (n+1) ys) 
+            | otherwise =  trace (show n ++ " |" ++ show y) (loop n ys) 
