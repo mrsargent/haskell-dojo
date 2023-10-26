@@ -70,8 +70,13 @@ isWinningLine p l = foldr (\x acc -> x == p && acc) True l
 
 -- Q#08
 
-hasWon = undefined
-
+hasWon :: Board -> Player -> Bool 
+hasWon b p = 
+    let tot = getAllLines b -- tot = [Lines]
+    in foldr (\x acc -> acc || isWinningLine p x) False tot
+     
+_X_WIN_ = [ [X, O, O], [O, X, O], [O, O, X]]
+_O_WIN_ = [ [O, X, O], [X, X, O], [X, O, O]]
 -- Q#09
 
 getGameState = undefined
