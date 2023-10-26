@@ -106,7 +106,7 @@ isWinningLine _ [] = False
 isWinningLine player xs = go False player xs 
     where
         go :: Bool -> Player -> Line -> Bool 
-        go True _ [] = True 
+   --    go True _ [] = True 
         go _ p (y:ys) = y == p && go True p ys 
         go bool _ [] = bool 
 
