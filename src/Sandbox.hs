@@ -17,6 +17,7 @@ length' (x:xs) = 1 + length' (xs)
 sum' :: [Int] -> Int
 sum' [] = 0
 sum' (x:xs) = x + sum' xs
+--sum' xs = foldr (+) 0 xs
 -- debug fucntion trace for the sum' function
 --sum' (x:xs) = trace ("sum' " ++ show xs) (x + sum' xs)
 
@@ -58,3 +59,68 @@ freq c xs = loop 0 xs
         loop n (y:ys) 
             | c == y    = trace (show n ++ " |" ++ show y) (loop (n+1) ys) 
             | otherwise =  trace (show n ++ " |" ++ show y) (loop n ys) 
+
+
+
+--notes from higher order functions lecture (10/26/23)
+-- filter (\c -> not (elem c "aeiou")) Squirtle
+-- result "Sqrtl"
+
+
+--inductive
+sum_ind [] = 0
+sum_ind (x:xs) = x + sum_ind xs 
+
+prod_ind [] = 1
+prod_ind (x:xs) = x * prod_ind xs 
+prod_ind' xs = foldr (\x y -> x * y) 1 xs 
+
+
+--iterative
+sum_iter2 x = loop 0 x where
+        loop s [] = s
+        loop s (x:xs) = loop (s + x) xs 
+
+--             function   (base) (list)  (ouptut which is same type as base case)
+-- foldr :: (a -> b -> b) -> b -> [a] -> b 
+
+-- foldr (\x y -> x + y) 0 [1,2,3,4]
+--  1,2,3,4 <-0
+--  1 + (2 + ( 3 + (4 + 0)))  you use base in the very first function.  Y Acts like an accumulator 
+--      and acuumulator is initalized in the base of foldr
+-- run this example to reenforce 
+sum'' xs = foldr (\x y -> trace ("x= " ++ show x ++ " | y = " ++ show y) x + y ) 0 xs 
+-- result sum'' [1,2,3,4]
+-- x= 4 | y = 0
+-- x= 3 | y = 4
+-- x= 2 | y = 7
+-- x= 1 | y = 9
+-- 10
+
+
+--foldl 0 [1,2,3,4]
+-- (((0 + 1) + 2) + 3) + 4  starting from the beginning as opposed to the end 
+
+
+sum_foldl xs = foldl (\a y -> trace ( concat ["a= ", show a, " | h = ", show y]) a + y) 0 xs 
+
+-- foldr (\x y -> x + y) 0 [1,2,3,4]   // the y is the accumulator
+-- foldl (\x y -> x + y) 0 [1,2,3,4]   // the x is the accumulator
+
+
+--remember foldr the y (second element is accum)
+freq_foldr :: Char -> String -> Int 
+freq_foldr c x = foldr step 0 x 
+    where
+        step item accum
+            | item == c = accum + 1 
+            | otherwise = accum 
+        
+
+--remember foldr the x (second element is accum)
+freq_foldl :: Char -> String -> Int 
+freq_foldl c x = foldl step 0 x 
+    where
+        step accum item 
+            | item == c = accum + 1 
+            | otherwise = accum 
