@@ -17,33 +17,21 @@ _HEADER_ =  let str = showInts' _RANGE_
 
 showSquares' :: [Square] -> [String]
 showSquares'  = map show
--- showSquare xs = map show xs   // explicit implementation
 
 -- Q#03
 
 dropFirstCol' :: Board -> Board 
---dropFirstCol []=[]
---dropFirstCol (x:xs) = tail x : dropFirstCol xs  
 dropFirstCol' = map tail 
 
 -- Q#04
 
 dropLastCol' :: Board -> Board 
---dropLastCol' [] = []
---dropLastCol' (x:xs) = init x : dropLastCol xs
 dropLastCol' = map init 
 
 --Q#05
 
 formatRows' :: [Row] -> [String]
 formatRows' xs = map (\x -> formatLine (showSquares' x)) xs 
---formatRows [] = [] 
---formatRows (x:xs) = formatLine (go x) : formatRows xs 
---    where   
---        go :: Row -> [String]
---        go [] = [] 
---        go y = showSquares y 
-
 
 -- Q#06
 isWinningLine_ :: Player -> Line -> Bool 
@@ -51,16 +39,6 @@ isWinningLine_ _ [] = False
 isWinningLine_ p l  = 
     let filteredList = filter (\x -> x == p) l 
     in length filteredList == length l
-
---isWinningLine :: Player -> Line -> Bool 
---isWinningLine _ [] = False 
---isWinningLine player xs = go False player xs 
-  --  where
-    --    go :: Bool -> Player -> Line -> Bool 
-      --  go True _ [] = True 
-      --  go _ p (y:ys) = y == p && go True p ys 
-      --  go bool _ [] = bool 
-
 
 -- Q#07
 
@@ -79,14 +57,35 @@ _X_WIN_ = [ [X, O, O], [O, X, O], [O, O, X]]
 _O_WIN_ = [ [O, X, O], [X, X, O], [X, O, O]]
 -- Q#09
 
-getGameState = undefined
+getGameState :: Board -> GameState
+getGameState b
+  | hasWon b X  = XWon 
+  | hasWon b O  = OWon
+  | isTie b     = Tie
+  | otherwise   = InProgress
+  where 
+    isTie :: Board -> Bool 
+    isTie = all (notElem Neither)    
 
-playMove = undefined
+playMove :: Player -> Board -> Move -> (GameState,Board)
+playMove p b (x,y) =
+  let newBoard = putSquare p b (x,y)
+      state = getGameState newBoard
+  in (state, newBoard)
 
 -- Q#10
-
-prependRowIndices = undefined
+prependRowIndices :: [String] -> [String]
+prependRowIndices = map combineToString . zipWith (\x y -> (x,y)) ['A'..] 
+  where
+    combineToString :: (Char,String) -> String 
+    combineToString (a,b) = a:b 
 
 -- Q#11
 
-formatBoard = undefined
+formatBoard :: Board -> String 
+formatBoard = (++) _HEADER_ . unlines . prependRowIndices . formatRows'
+
+
+
+
+ 
