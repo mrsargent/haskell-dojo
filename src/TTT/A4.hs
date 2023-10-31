@@ -83,9 +83,7 @@ prependRowIndices = map combineToString . zipWith (\x y -> (x,y)) ['A'..]
 -- Q#11
 
 formatBoard :: Board -> String 
-formatBoard = (++) _HEADER_ . unlines . prependRowIndices . formatRows'
-
-
-
-
- 
+--formatBoard = (++) _HEADER_ . unlines . prependRowIndices . formatRows'
+formatBoard = unlines . ((++) [str] . prependRowIndices . formatRows')
+  where
+    str = " " ++ _HEADER_

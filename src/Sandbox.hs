@@ -1,5 +1,7 @@
 module Sandbox where
 import Debug.Trace
+import Data.List
+import Data.Char
 
 
 -- recursion examples
@@ -61,7 +63,7 @@ freq c xs = loop 0 xs
             | otherwise =  trace (show n ++ " |" ++ show y) (loop n ys) 
 
 
-
+---------------------------------------------------------------------------------------------------------------
 --notes from higher order functions lecture (10/26/23)
 -- filter (\c -> not (elem c "aeiou")) Squirtle
 -- result "Sqrtl"
@@ -124,3 +126,21 @@ freq_foldl c x = foldl step 0 x
         step accum item 
             | item == c = accum + 1 
             | otherwise = accum 
+
+-------------------------------------------------------------------------------------------------------
+--notes from lecture (10/31/23)
+--zipwith' :: [a] -> [b] -> [c]
+zipwith' x y = zipWith (\a b -> [a,b]) x y 
+zipwith'' = zipWith (\a b -> a : b : []) "PQR" "XYZ"
+zipwith''' = zipWith (\a b -> [a] ++ [b]) "PQR" "XYZ"
+
+
+-- (+) ((+) 3 4) 5
+-- 3 + 4 + 5
+
+-- ($) apply  , (.) compose
+-- reverse ("abc" ++ "def") == reverse $ "abc" ++ "def"
+
+-- double x = x + x
+-- square x = x^2 
+-- (square . double) 7  or square . double $ 7 
