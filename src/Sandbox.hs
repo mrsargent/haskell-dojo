@@ -144,3 +144,25 @@ zipwith''' = zipWith (\a b -> [a] ++ [b]) "PQR" "XYZ"
 -- double x = x + x
 -- square x = x^2 
 -- (square . double) 7  or square . double $ 7 
+
+------------------------------------------------------------------------------------------------------
+-- notes from lecture (11/2/23)
+-- main :: IO ()
+-- main = 
+--    putStrLn "hello world " >>
+--    putStrLn "nice to meet you"
+-- result: hello world \n nice to meet you
+
+-- this style is called handing lambda
+main = putStrLn "Enter a lowercase phrase" >> 
+    getLine >>= \s -> 
+    putStrLn "Uppercase version of phrase" >> 
+    putStrLn (map toUpper s)   
+
+
+-- do notation 
+main' = do
+    putStrLn "Enter a lowercase phrase"
+    s <- getLine
+    putStrLn "Uppercase version of phrase"
+    putStrLn (map toUpper s)
