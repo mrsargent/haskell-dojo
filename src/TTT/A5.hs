@@ -62,13 +62,13 @@ play b p = do
         OWon -> putStrLn "O won bitch"
         Tie -> putStrLn "It's a tie bitch"
       
-
-
-
 -- Q#06
 
 runTTT :: IO ()
-runTTT = putStrLn "Not implemented... yet!"
+runTTT = do  
+    putStrLn "Not implemented... yet!"
+    play _EMPTY_BOARD_ =<< firstPlayer 
+
 
 -- Q#07
 
