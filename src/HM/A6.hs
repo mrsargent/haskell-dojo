@@ -45,16 +45,25 @@ revealLetters move secret guess =
     in zipWith revealFunc guess secret
 
 -- Example usage
-main :: IO ()
-main = do
-    let secret = "Haskell"
-        guess = replicate (length secret) '_'
-        move = 'l'
-        updatedGuess = revealLetters move secret guess
+main :: Move -> Secret -> Guess -> IO ()
+main move secret guess = do
+    putStr "Enter a letter you think is in the secret word: "
+    m <- getLine
+    let move = head m 
+        s = "bitch"
+        updatedGuess = zipWith (\x y -> if y == move then y else x) s guess    
     putStrLn $ "Secret: " ++ secret
     putStrLn $ "Initial Guess: " ++ guess
     putStrLn $ "Move: " ++ [move]
     putStrLn $ "Updated Guess: " ++ updatedGuess
+    if '_' `elem` updatedGuess then 
+        putStrLn "keep guessing bitch"
+        main '_' s updatedGuess 
+    else
+        return updatedGuess
+
+
+
 
 
     
