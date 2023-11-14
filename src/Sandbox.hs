@@ -166,3 +166,59 @@ main' = do
     s <- getLine
     putStrLn "Uppercase version of phrase"
     putStrLn (map toUpper s)
+
+
+
+-- notes from lecture (11/14/23)
+-- record syntax baby!!!!
+data Pokemon = Pokemon {
+    pName :: String,
+    pId   :: Int,
+    pPower :: [String]
+} 
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- ohhhhhhhh  the reason why deriving Show uses a capital S while the show function uses a lower case s is because
+-- this derives the type clasa and types are always capitalized (e.g. Float, Int, String, etc)
+-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+data Trainer = Trainer {
+    tName :: String,
+    tCity :: String 
+}
+
+
+pikachu = Pokemon "Pikachu" 25 ["Electric"]
+charmander = Pokemon "Chamander" 4 ["Fire"]
+-- map pName [pikachu,charmander]    result: returns the name of both types
+
+data Employee = 
+    Manager  {mName :: String, mExpt ::Float}
+    | Coder {cName :: String, cExpt ::Float}
+
+getSalary :: Employee -> Float 
+getSalary (Manager _ e) = 50 + 12 * e 
+getSalary (Coder _ e) = 47 + 9 * e 
+-- getSalary (Manager "Bob" 15)   
+-- return 230.0 
+
+
+--if we derive show directly in the pokemon type this is the output
+    -- Pokemon {pName = "Pikachu", pId = 25, pPower = ["Electric"]}
+--what if we just want to show the pName??? We have to manually derive 
+
+instance Show Pokemon where 
+    show p = pName p ++ " " ++ show (pId p)
+
+data Boss = Boss { bName :: String, bExp :: Float}
+data Developer = Developer {dName :: String, dExp :: Float, cBoss :: Boss}
+
+class Worker a where 
+    getSalary' :: a->Float 
+
+
+instance Worker Boss where 
+    getSalary' (Boss _ e) = 12 * e 
+
+
+instance Worker Developer where
+    getSalary' (Developer _ e _) = 10 * e
