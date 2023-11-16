@@ -175,7 +175,7 @@ data Pokemon = Pokemon {
     pName :: String,
     pId   :: Int,
     pPower :: [String]
-} 
+}  --deriving Show 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 -- ohhhhhhhh  the reason why deriving Show uses a capital S while the show function uses a lower case s is because
 -- this derives the type clasa and types are always capitalized (e.g. Float, Int, String, etc)
@@ -217,8 +217,38 @@ class Worker a where
 
 
 instance Worker Boss where 
+    getSalary' :: Boss -> Float
     getSalary' (Boss _ e) = 12 * e 
 
 
 instance Worker Developer where
+    getSalary' :: Developer -> Float
     getSalary' (Developer _ e _) = 10 * e
+
+
+-- lecture 11/16/23                                                         action     callback  
+-- (>>=) takes an action of type IO a then it takes a callback and combines  IO a -> (a -> IO b) -> IO b 
+-- (>>=) m a -> (a -> m b) -> m b 
+
+
+safeDiv :: Int -> Int -> Maybe Int 
+safeDiv x 0 = Nothing 
+safeDiv x y = Just (div x y)
+
+divThenAdd :: Int -> Int -> Int -> Maybe Int 
+divThenAdd x a b = 
+    case safeDiv x a of 
+        Nothing -> Nothing
+        Just v ->
+            case safeDiv x b of 
+                Nothing -> Nothing
+                Just w -> Just (v + w)
+
+divThenAdd' :: Int -> Int -> Int -> Maybe Int 
+divThenAdd' x a b = 
+    safeDiv x a >>= \v ->
+    safeDiv x b >>= \w ->
+    Just (v+w)
+
+    
+
