@@ -2,6 +2,7 @@ module Sandbox where
 import Debug.Trace
 import Data.List
 import Data.Char
+import Text.Read
 
 
 -- recursion examples
@@ -213,16 +214,14 @@ data Boss = Boss { bName :: String, bExp :: Float}
 data Developer = Developer {dName :: String, dExp :: Float, cBoss :: Boss}
 
 class Worker a where 
-    getSalary' :: a->Float 
+    getSalary' :: a -> Float 
 
 
-instance Worker Boss where 
-    getSalary' :: Boss -> Float
+instance Worker Boss where   
     getSalary' (Boss _ e) = 12 * e 
 
 
-instance Worker Developer where
-    getSalary' :: Developer -> Float
+instance Worker Developer where    
     getSalary' (Developer _ e _) = 10 * e
 
 
@@ -250,5 +249,63 @@ divThenAdd' x a b =
     safeDiv x b >>= \w ->
     Just (v+w)
 
+-- lecture from 11/21
+type Name = String
+type Id = Int
+type Power = [String] 
     
+data Pokemon2 = MkPokemon Name Id Power deriving Show 
+
+capFirstLetter :: String -> String 
+capFirstLetter [] = []
+capFirstLetter (h:t) = toUpper h : t 
+
+nameValProc :: String -> Maybe Name 
+nameValProc n 
+    | length n < 4 = Nothing  -- ERROR
+    | otherwise = Just $ capFirstLetter $ filter isAlphaNum n
+
+idValProc :: String -> Maybe Id 
+idValProc id = 
+    case readMaybe id of 
+        Nothing -> Nothing
+        Just v -> if v < 1 then Nothing else Just v 
+
+powerValProc :: [String] -> Maybe Power 
+powerValProc power 
+    | null power = Nothing 
+    | otherwise = Just $ map capFirstLetter power 
+
+
+--pain in the ass way to extract the maybe out of the function
+mkPokemon :: String -> String -> [String] -> Maybe Pokemon2
+mkPokemon sName sId sPower =
+    case nameValProc sName of 
+        Nothing -> Nothing 
+        Just name -> 
+            case idValProc sId of 
+                Nothing -> Nothing
+                Just num ->
+                    case powerValProc sPower of 
+                        Nothing -> Nothing
+                        Just powers -> Just $ MkPokemon name num powers  
+
+--much better way to extract the maybe out of the funtion
+mkPokemon' :: String -> String -> [String] -> Maybe Pokemon2
+mkPokemon' sName sId sPower =
+    nameValProc sName   >>= \n ->
+    idValProc sId       >>= \i ->
+    powerValProc sPower >>= \p ->
+    return $ MkPokemon n i p --either return or Just work
+    --Just $ MkPokemon n i p 
+
+
+--much better way to extract the maybe out of the funtion uinsg do notation
+mkPokemon'' :: String -> String -> [String] -> Maybe Pokemon2
+mkPokemon'' sName sId sPower = do 
+    n <- nameValProc sName 
+    i <- idValProc sId 
+    p <- powerValProc sPower 
+    return $ MkPokemon n i p 
+
 
