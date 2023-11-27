@@ -309,3 +309,31 @@ mkPokemon'' sName sId sPower = do
     return $ MkPokemon n i p 
 
 
+
+-- lecture 11/23
+-- using Either instead of Maybe
+data Error = InvalidName | WrongNumber | EmptyPowers | NegativeNumber deriving Show 
+
+nameValProc' :: String -> Either Error Name 
+nameValProc' n 
+    | length n < 4 = Left InvalidName 
+    | otherwise = Right . capFirstLetter $ filter isAlphaNum n
+
+idValProc' :: String -> Either Error Id 
+idValProc' id = 
+    case readMaybe id of 
+        Nothing -> Left WrongNumber
+        Just v -> if v < 1 then Left NegativeNumber else Right v  
+
+powerValProc' :: [String] -> Either Error Power 
+powerValProc' power 
+    | null power = Left EmptyPowers 
+    | otherwise = Right . map capFirstLetter $ power 
+
+
+mkPokemon''' :: String -> String -> [String] -> Either Error Pokemon2
+mkPokemon''' sName sId sPower = do 
+    n <- nameValProc' sName 
+    i <- idValProc' sId 
+    p <- powerValProc' sPower 
+    return $ MkPokemon n i p  
