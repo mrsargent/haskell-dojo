@@ -91,10 +91,38 @@ isInDict dict secret except = validateSecret (\x -> map toLower x `elem` dict) e
 
 -- Q#10
 
-validateNoDict = undefined
+validateNoDict :: Secret -> Either GameException Secret 
+validateNoDict secret = do
+  c <- hasValidChars secret InvalidChars
+  l <- isValidLength secret InvalidLength 
+  return secret 
 
-validateWithDict = undefined
+validateNoDict' :: Secret -> Either GameException Secret 
+validateNoDict' secret = 
+  case hasValidChars secret InvalidChars of 
+    Left err -> Left err 
+    Right validSecret ->
+      case isValidLength secret InvalidLength of
+        Left err -> Left err 
+        Right validLength -> Right secret -- return secret would have also have worked 
+
+
+validateWithDict :: Secret -> Dictionary -> Either GameException Secret 
+validateWithDict secret dict = do 
+  c <- validateNoDict secret 
+  d <- isInDict dict secret NotInDict 
+  return secret 
+
 
 -- Q#11
 
-processTurn = undefined
+processTurn :: Move -> Game -> Either GameException Game 
+processTurn move game
+  | repeatedMove move game            = Left RepeatMove 
+  | invalidMove move                  = Left InvalidMove
+  | chancesRemaining updatedGame == 0 = Left GameOver
+  | otherwise                         = Right updatedGame 
+    where 
+      updatedGame = updateGame move game  
+
+  
