@@ -72,16 +72,22 @@ toMaybe x a
   | otherwise = Nothing 
 
 -- Q#08
+validateSecret :: (Secret -> Bool) -> GameException -> Secret -> Either GameException Secret 
+validateSecret pred exception secret
+  | pred secret = Right secret
+  | otherwise   = Left exception 
 
-validateSecret = undefined
 
 -- Q#09
 
-hasValidChars = undefined
+hasValidChars :: Secret -> GameException -> Either GameException Secret  
+hasValidChars secret except = validateSecret (\x -> all isAlpha x) except secret 
 
-isValidLength = undefined
+isValidLength :: Secret -> GameException -> Either GameException Secret
+isValidLength secret except = validateSecret (\x -> lengthInRange x) except secret 
 
-isInDict = undefined
+isInDict :: Dictionary -> Secret -> GameException -> Either GameException Secret
+isInDict dict secret except = validateSecret (\x -> map toLower x `elem` dict) except secret 
 
 -- Q#10
 
