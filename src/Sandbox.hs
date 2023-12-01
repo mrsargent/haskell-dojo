@@ -310,7 +310,7 @@ mkPokemon'' sName sId sPower = do
 
 
 
--- lecture 11/23
+-- lecture 11/23/23
 -- using Either instead of Maybe
 data Error = InvalidName | WrongNumber | EmptyPowers | NegativeNumber deriving Show 
 
@@ -337,3 +337,25 @@ mkPokemon''' sName sId sPower = do
     i <- idValProc' sId 
     p <- powerValProc' sPower 
     return $ MkPokemon n i p  
+
+
+-- lecture 12/1/23
+-- maybe, either, and IO are all mondads
+
+-- class Monad m where
+--      (>>=):: m a -> (a -> m a) -> m b 
+
+--see safeDiv from above.  the signature is Int -> Int -> Maybe Int
+-- (safeDiv 12 3) >>= (\x -> return (x+1))
+-- fmap (\x -> x + 1) (safeDive 12 3)    !!!! fmap works with monads
+
+-- immutability
+-- static typing
+-- type system
+-- purity
+
+-- Maybe    a
+-- Either e a
+-- IO       a
+-- State s  a
+-- Reader r a
